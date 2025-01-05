@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppDispatch, useAppSelector } from "@/app/redux";
-import { setIsDarkMode, setIsSidebarCollapsed } from "@/state";
+import { setIsDarkMode, setIsSidebarCollapsed } from "@/app/state";
 import { Bell, Menu, Moon, Settings, Sun } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -73,7 +73,7 @@ const Navbar = () => {
               height={50}
               className="rounded-full h-full object-cover"
             />
-            <span className="font-semibold">Ed Roh</span>
+            <span className="font-semibold">Satish Amara</span>
           </div>
         </div>
         <Link href="/settings">
