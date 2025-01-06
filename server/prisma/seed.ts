@@ -1,19 +1,39 @@
 import { PrismaClient } from "@prisma/client";
 import fs from "fs";
 import path from "path";
+
 const prisma = new PrismaClient();
 
 async function deleteAllData(orderedFileNames: string[]) {
+  // Map the file names to model names in proper order
   const modelNames = orderedFileNames.map((fileName) => {
     const modelName = path.basename(fileName, path.extname(fileName));
     return modelName.charAt(0).toUpperCase() + modelName.slice(1);
   });
 
-  for (const modelName of modelNames) {
+  // Handle models with foreign key constraints first, in reverse order
+  const deleteOrder = [
+    "Sales", // Assuming Sales depends on Products
+    "Products", // Product needs to be deleted after Sales
+    "ExpenseSummary",
+    "SalesSummary",
+    "Purchases",
+    "PurchaseSummary",
+    "Users",
+    "Expenses",
+    "ExpenseByCategory",
+  ];
+
+  for (const modelName of deleteOrder) {
     const model: any = prisma[modelName as keyof typeof prisma];
     if (model) {
-      await model.deleteMany({});
-      console.log(`Cleared data from ${modelName}`);
+      try {
+        // Delete all related records before deleting the main model
+        await model.deleteMany({});
+        console.log(`Cleared data from ${modelName}`);
+      } catch (error) {
+        console.error(`Failed to delete data from ${modelName}:`, error);
+      }
     } else {
       console.error(
         `Model ${modelName} not found. Please ensure the model name is correctly specified.`
