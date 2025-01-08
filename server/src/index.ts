@@ -24,7 +24,7 @@ app.use("/products", productRoutes);   // http://loacalhost:8000/products
 app.use("/users", userRoutes); //http://localhost:8000/users
 app.use("/expenses", expenseRoutes); // http://localhost:8000/expenses
 
-const port = process.env.PORT || 3001;
-app.listen(port, () =>{
+const port = Number(process.env.PORT) || 3001;
+app.listen(port, "0.0.0.0" ,() =>{
     console.log('server running on port ', port);
 });
