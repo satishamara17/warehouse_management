@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import Header from "@/app/(components)/Header";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsDarkMode } from "@/state"; // Adjust path based on your folder structure
 
 type UserSetting = {
   label: string;
@@ -18,20 +20,30 @@ const dummySettings: UserSetting[] = [
 ];
 
 const Settings = () => {
+  const dispatch = useDispatch();
+  const isDarkMode = useSelector((state: any) => state.isDarkMode); // Access isDarkMode from Redux state
   const [userSettings, setUserSettings] = useState<UserSetting[]>(dummySettings);
 
   const handleToggleChange = (index: number) => {
     const settingsCopy = [...userSettings];
+    const isDarkModeToggle = settingsCopy[index].label === "Dark Mode";
+
+    // Update toggle value in local state
     settingsCopy[index].value = !settingsCopy[index].value as boolean;
     setUserSettings(settingsCopy);
+
+    // Dispatch setIsDarkMode action for the "Dark Mode" toggle
+    if (isDarkModeToggle) {
+      dispatch(setIsDarkMode(settingsCopy[index].value as boolean));
+    }
   };
 
   return (
-    <div className="w-full">
+    <div className={`w-full ${isDarkMode ? "dark-mode" : ""}`}>
       <Header name="User Settings" />
       <div className="overflow-x-auto mt-5 shadow-md rounded-lg">
-        <table className="min-w-full bg-white">
-          <thead className="bg-gray-800 text-white">
+        <table className="min-w-full bg-white dark-mode:bg-gray-900 dark-mode:text-white">
+          <thead className="bg-gray-800 text-white dark-mode:bg-gray-700">
             <tr>
               <th className="text-left py-3 px-4 uppercase font-semibold text-sm">
                 Setting
@@ -43,7 +55,10 @@ const Settings = () => {
           </thead>
           <tbody>
             {userSettings.map((setting, index) => (
-              <tr className="hover:bg-blue-50" key={setting.label}>
+              <tr
+                className="hover:bg-blue-50 dark-mode:hover:bg-gray-700"
+                key={setting.label}
+              >
                 <td className="py-2 px-4">{setting.label}</td>
                 <td className="py-2 px-4">
                   {setting.type === "toggle" ? (
