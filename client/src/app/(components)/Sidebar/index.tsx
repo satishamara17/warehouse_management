@@ -17,6 +17,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
+
 interface SidebarLinkProps {
   href: string;
   icon: LucideIcon;
@@ -81,11 +82,17 @@ const Sidebar = () => {
           isSidebarCollapsed ? "px-5" : "px-8"
         }`}
       >
-      <div>logo</div>
+        <Image
+              src="https://mys3warehouse.s3.us-east-2.amazonaws.com/logo.png"
+              alt="Logo"
+              width={48}
+              height={48}
+              className="rounded w-14 h-14"
+            />
         <h1
           className={`${
             isSidebarCollapsed ? "hidden" : "block"
-          } font-extrabold text-2xl`}
+          } font-extrabold text-2xl `}
         >
           SAT
         </h1>

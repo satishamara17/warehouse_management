@@ -1,4 +1,4 @@
-import {createSlice , isDraft, PayloadAction} from "@reduxjs/toolkit"
+import {createSlice , PayloadAction} from "@reduxjs/toolkit"
 
 export interface InitialStateTypes {
     isSidebarCollapsed: boolean;
